@@ -17,12 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		compose.yaml = compose.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anexcs.Distro.IntegrationTests", "Anexcs.Distro.IntegrationTests\Anexcs.Distro.IntegrationTests.csproj", "{E7FF5CCC-776D-43D9-BDEC-177759CC73F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{E7FF5CCC-776D-43D9-BDEC-177759CC73F1} = {DBFB72CF-F013-4CDD-9BC7-7E2D6041F1C1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7AB6F323-84C2-44D6-9C12-DAD3FB15EAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -41,5 +44,9 @@ Global
 		{825E2EDF-73D6-43A2-B126-63A668C90273}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{825E2EDF-73D6-43A2-B126-63A668C90273}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{825E2EDF-73D6-43A2-B126-63A668C90273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7FF5CCC-776D-43D9-BDEC-177759CC73F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7FF5CCC-776D-43D9-BDEC-177759CC73F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7FF5CCC-776D-43D9-BDEC-177759CC73F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7FF5CCC-776D-43D9-BDEC-177759CC73F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

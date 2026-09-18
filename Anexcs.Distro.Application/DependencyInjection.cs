@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using Anexcs.Distro.Application.Common.Behaviors;
+using MediatR;
+using FluentValidation;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Anexcs.Distro.Application;
@@ -13,7 +16,13 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(
                 typeof(DependencyInjection).Assembly);
         });
-
+        
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        
+        services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ValidationBehavior<,>));
+        
         return services;
     }
 }

@@ -1,7 +1,9 @@
-﻿using Anexcs.Distro.Infrastructure.Persistence.Central;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Anexcs.Distro.Application.Abstractions.Persistence;
+using Anexcs.Distro.Infrastructure.Persistence.Central;
+using Anexcs.Distro.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Anexcs.Distro.Infrastructure;
 
@@ -16,6 +18,10 @@ public static class DependencyInjection
             options.UseNpgsql(
                 configuration.GetConnectionString("CentralDatabase"));
         });
+        
+        services.AddScoped<ITenantRepository, TenantRepository>();
+        services.AddScoped<IUnitOfWork>(sp =>
+            sp.GetRequiredService<CentralDbContext>());
         
         return services;
     }

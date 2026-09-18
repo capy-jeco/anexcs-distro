@@ -13,9 +13,7 @@
 
     <ItemGroup>
       <Folder Include="Abstractions\Identity\" />
-      <Folder Include="Abstractions\Persistence\" />
       <Folder Include="Abstractions\Tenancy\" />
-      <Folder Include="Common\Behaviors\" />
       <Folder Include="Common\Exceptions\" />
       <Folder Include="Common\Mapping\" />
       <Folder Include="Common\Models\" />
@@ -42,6 +40,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
       <PackageReference Include="MediatR" Version="14.2.0" />
     </ItemGroup>
 
