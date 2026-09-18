@@ -7,4 +7,8 @@ public interface ITenantRepository
     Task AddAsync(
         Tenant tenant,
         CancellationToken cancellationToken);
+    
+    Task<Tenant?> GetByDomainAsync(
+        string domain,
+        CancellationToken cancellationToken);
 }
