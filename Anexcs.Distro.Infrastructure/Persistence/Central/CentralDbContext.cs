@@ -1,6 +1,5 @@
 ﻿using Anexcs.Distro.Application.Abstractions.Persistence;
-using Anexcs.Distro.Domain.Entities;
-using Anexcs.Distro.Infrastructure.Persistence.Repositories;
+using Anexcs.Distro.Domain.Entities.Central;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anexcs.Distro.Infrastructure.Persistence.Central;
@@ -11,12 +10,12 @@ public class CentralDbContext : DbContext, IUnitOfWork
         DbContextOptions<CentralDbContext> options)
         : base(options) { }
     
-    public DbSet<Domain.Entities.Tenant> Tenants => Set<Domain.Entities.Tenant>();
-    public DbSet<TenantDomain> Domains => Set<TenantDomain>();
+    public DbSet<Domain.Entities.Central.Tenant> Tenants => Set<Domain.Entities.Central.Tenant>();
+    public DbSet<Domain.Entities.Central.TenantDomain> Domains => Set<Domain.Entities.Central.TenantDomain>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Domain.Entities.Tenant>(b =>
+        modelBuilder.Entity<Domain.Entities.Central.Tenant>(b =>
         {
             b.HasKey(t => t.Id);
             b.Property(t => t.Data).HasColumnType("jsonb");

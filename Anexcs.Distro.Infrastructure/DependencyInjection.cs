@@ -1,6 +1,6 @@
 ﻿using Anexcs.Distro.Application.Abstractions.Persistence;
 using Anexcs.Distro.Infrastructure.Persistence.Central;
-using Anexcs.Distro.Infrastructure.Persistence.Repositories;
+using Anexcs.Distro.Infrastructure.Persistence.Repositories.Central;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

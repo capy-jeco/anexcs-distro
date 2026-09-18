@@ -1,9 +1,9 @@
 ﻿using Anexcs.Distro.Application.Tenants.Commands.CreateTenant;
-using Api.Contracts.Tenant;
+using Api.Contracts.Central.Tenant;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers.Tenant;
+namespace Api.Controllers.Central;
 
 [ApiController]
 [Route("api/[controller]")]

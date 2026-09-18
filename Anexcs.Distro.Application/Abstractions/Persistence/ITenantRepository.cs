@@ -1,4 +1,4 @@
-﻿using Anexcs.Distro.Domain.Entities;
+﻿using Anexcs.Distro.Domain.Entities.Central;
 
 namespace Anexcs.Distro.Application.Abstractions.Persistence;
 

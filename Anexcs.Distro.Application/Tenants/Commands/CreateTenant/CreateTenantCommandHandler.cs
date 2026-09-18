@@ -1,5 +1,5 @@
 ﻿using Anexcs.Distro.Application.Abstractions.Persistence;
-using Anexcs.Distro.Domain.Entities;
+using Anexcs.Distro.Domain.Entities.Central;
 using MediatR;
 
 namespace Anexcs.Distro.Application.Tenants.Commands.CreateTenant;

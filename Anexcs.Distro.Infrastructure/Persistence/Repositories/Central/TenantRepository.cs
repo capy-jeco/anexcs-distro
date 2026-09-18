@@ -1,7 +1,7 @@
 ﻿using Anexcs.Distro.Application.Abstractions.Persistence;
 using Anexcs.Distro.Infrastructure.Persistence.Central;
 
-namespace Anexcs.Distro.Infrastructure.Persistence.Repositories;
+namespace Anexcs.Distro.Infrastructure.Persistence.Repositories.Central;
 
 public sealed class TenantRepository : ITenantRepository
 {
@@ -13,7 +13,7 @@ public sealed class TenantRepository : ITenantRepository
     }
 
     public async Task AddAsync(
-        Domain.Entities.Tenant tenant,
+        Domain.Entities.Central.Tenant tenant,
         CancellationToken cancellationToken)
     {
         await _context.Tenants.AddAsync(

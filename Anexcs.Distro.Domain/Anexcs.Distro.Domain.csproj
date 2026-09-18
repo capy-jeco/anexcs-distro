@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Entities\Tenants\" />
       <Folder Include="Enums\" />
       <Folder Include="Events\" />
       <Folder Include="Exceptions\" />

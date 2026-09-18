@@ -1,4 +1,4 @@
-﻿namespace Anexcs.Distro.Domain.Entities;
+﻿namespace Anexcs.Distro.Domain.Entities.Central;
 
 public class TenantDomain
 {
