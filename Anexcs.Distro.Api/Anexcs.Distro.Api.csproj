@@ -10,6 +10,10 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
         <PackageReference Include="NuGet.Packaging" Version="6.13.0" />
         <PackageReference Include="NuGet.Protocol" Version="6.13.0" />
@@ -21,7 +25,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+      <Folder Include="Contracts\Central\" />
+      <Folder Include="Controllers\Central\" />
       <Folder Include="Extensions\" />
       <Folder Include="Middlewares\" />
     </ItemGroup>

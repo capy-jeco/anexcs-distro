@@ -1,5 +1,7 @@
 using Anexcs.Distro.Application;
 using Anexcs.Distro.Infrastructure;
+using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Api;
 
@@ -27,6 +29,29 @@ public class Program
         {
             app.MapOpenApi();
         }
+        
+        app.UseExceptionHandler(errorApp =>
+        {
+            errorApp.Run(async context =>
+            {
+                var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+
+                if (exceptionHandlerFeature?.Error is ValidationException validationException)
+                {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsJsonAsync(new
+                    {
+                        errors = validationException.Errors.Select(e => e.ErrorMessage)
+                    });
+                    return;
+                }
+
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            });
+        });
+        
+        app.MapControllers();
 
         app.UseHttpsRedirection();
 
