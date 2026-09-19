@@ -1,17 +1,16 @@
-﻿using Anexcs.Distro.Application.Abstractions.Persistence;
-using Anexcs.Distro.Domain.Entities.Central;
+﻿using Anexcs.Distro.Application.Abstractions.Persistence.Central;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anexcs.Distro.Infrastructure.Persistence.Central;
 
-public class CentralDbContext : DbContext, IUnitOfWork
+public class CentralDbContext : DbContext, ICentralUnitOfWork
 {
     public CentralDbContext(
         DbContextOptions<CentralDbContext> options)
         : base(options) { }
     
     public DbSet<Domain.Entities.Central.Tenant> Tenants => Set<Domain.Entities.Central.Tenant>();
-    public DbSet<Domain.Entities.Central.TenantDomain> Domains => Set<Domain.Entities.Central.TenantDomain>();
+    public DbSet<Domain.Entities.Central.TenantDomain> TenantDomains => Set<Domain.Entities.Central.TenantDomain>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,7 +24,7 @@ public class CentralDbContext : DbContext, IUnitOfWork
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        modelBuilder.Entity<TenantDomain>(b =>
+        modelBuilder.Entity<Domain.Entities.Central.TenantDomain>(b =>
         {
             b.HasKey(d => d.Id);
             b.HasIndex(d => d.Domain)
