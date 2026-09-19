@@ -1,5 +1,6 @@
 using Anexcs.Distro.Application;
 using Anexcs.Distro.Infrastructure;
+using Api.Middlewares;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 
@@ -11,6 +12,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Exception Handling Middleware
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddProblemDetails();
+        
         // Add services to the container.
         builder.Services.AddAuthorization();
         
@@ -18,6 +23,9 @@ public class Program
         builder.Services.AddInfrastructure(builder.Configuration);
         
         builder.Services.AddControllers();
+        
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
         
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
@@ -28,28 +36,12 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
         
-        app.UseExceptionHandler(errorApp =>
-        {
-            errorApp.Run(async context =>
-            {
-                var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
-
-                if (exceptionHandlerFeature?.Error is ValidationException validationException)
-                {
-                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    context.Response.ContentType = "application/json";
-                    await context.Response.WriteAsJsonAsync(new
-                    {
-                        errors = validationException.Errors.Select(e => e.ErrorMessage)
-                    });
-                    return;
-                }
-
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            });
-        });
+        app.UseExceptionHandler(); 
         
         app.MapControllers();
 

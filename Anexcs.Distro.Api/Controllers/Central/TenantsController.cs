@@ -1,12 +1,14 @@
-﻿using Anexcs.Distro.Application.Tenants.Commands.CreateTenant;
+﻿using Anexcs.Distro.Application.Central.Tenants.Commands.CreateTenant;
 using Api.Contracts.Central.Tenant;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Central;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/{version:apiVersion}/[controller]")]
 public class TenantsController(ISender sender) : ControllerBase
 {
 
