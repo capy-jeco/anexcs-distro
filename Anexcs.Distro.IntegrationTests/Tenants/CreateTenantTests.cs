@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 using Anexcs.Distro.Infrastructure.Persistence.Central;
-using Api.Contracts.Tenant;
+using Api.Contracts.Central.Tenant;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

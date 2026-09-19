@@ -14,29 +14,10 @@
     <ItemGroup>
       <Folder Include="Abstractions\Identity\" />
       <Folder Include="Abstractions\Tenancy\" />
+      <Folder Include="Central\TenantDomains\Commands\" />
       <Folder Include="Common\Exceptions\" />
       <Folder Include="Common\Mapping\" />
       <Folder Include="Common\Models\" />
-      <Folder Include="Inventory\Commands\" />
-      <Folder Include="Inventory\Dtos\" />
-      <Folder Include="Inventory\Queries\" />
-      <Folder Include="Inventory\Validators\" />
-      <Folder Include="Products\Commands\" />
-      <Folder Include="Products\Dtos\" />
-      <Folder Include="Products\Queries\" />
-      <Folder Include="Products\Validators\" />
-      <Folder Include="Purchasing\Commands\" />
-      <Folder Include="Purchasing\Dtos\" />
-      <Folder Include="Purchasing\Queries\" />
-      <Folder Include="Purchasing\Validators\" />
-      <Folder Include="Sales\Commands\" />
-      <Folder Include="Sales\Dtos\" />
-      <Folder Include="Sales\Queries\" />
-      <Folder Include="Sales\Validators\" />
-      <Folder Include="Warehouses\Commands\" />
-      <Folder Include="Warehouses\Dtos\" />
-      <Folder Include="Warehouses\Queries\" />
-      <Folder Include="Warehouses\Validators\" />
     </ItemGroup>
 
     <ItemGroup>

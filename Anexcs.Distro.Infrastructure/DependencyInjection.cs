@@ -1,6 +1,11 @@
-﻿using Anexcs.Distro.Application.Abstractions.Persistence;
+﻿// Distro.Application
+using Anexcs.Distro.Application.Abstractions.Persistence.Central;
+using Anexcs.Distro.Application.Abstractions.Persistence.Tenant;
+
+// Distro.Infrastructure
 using Anexcs.Distro.Infrastructure.Persistence.Central;
-using Anexcs.Distro.Infrastructure.Persistence.Repositories;
+using Anexcs.Distro.Infrastructure.Persistence.Central.Repositories;
+using Anexcs.Distro.Infrastructure.Persistence.Tenant;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,8 +25,12 @@ public static class DependencyInjection
         });
         
         services.AddScoped<ITenantRepository, TenantRepository>();
-        services.AddScoped<IUnitOfWork>(sp =>
+        services.AddScoped<ITenantDomainRepository, TenantDomainRepository>();
+        
+        services.AddScoped<ICentralUnitOfWork>(sp =>
             sp.GetRequiredService<CentralDbContext>());
+        services.AddScoped<ITenantUnitOfWork>(sp =>
+            sp.GetRequiredService<TenantDbContext>());
         
         return services;
     }
