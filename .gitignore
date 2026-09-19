@@ -3,7 +3,8 @@
 # ==========================================
 bin/
 obj/
-out/
+**/[Bb]in/
+**/[Oo]bj/
 publish/
 [Dd]ebug/
 [Rr]elease/
