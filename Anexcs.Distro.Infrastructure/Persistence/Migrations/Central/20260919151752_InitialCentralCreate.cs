@@ -26,7 +26,7 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
                 });
 
             migrationBuilder.CreateTable(
-                name: "Domains",
+                name: "TenantDomains",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -37,9 +37,9 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Domains", x => x.Id);
+                    table.PrimaryKey("PK_TenantDomains", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Domains_Tenants_TenantId",
+                        name: "FK_TenantDomains_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "Id",
@@ -47,14 +47,14 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Domains_Domain",
-                table: "Domains",
+                name: "IX_TenantDomains_Domain",
+                table: "TenantDomains",
                 column: "Domain",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Domains_TenantId",
-                table: "Domains",
+                name: "IX_TenantDomains_TenantId",
+                table: "TenantDomains",
                 column: "TenantId");
         }
 
@@ -62,7 +62,7 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Domains");
+                name: "TenantDomains");
 
             migrationBuilder.DropTable(
                 name: "Tenants");
