@@ -1,14 +1,13 @@
-﻿using Anexcs.Distro.Domain.Entities.Central;
-
-namespace Anexcs.Distro.Application.Abstractions.Persistence;
+﻿
+namespace Anexcs.Distro.Application.Abstractions.Persistence.Central;
 
 public interface ITenantRepository
 {
     Task AddAsync(
-        Tenant tenant,
+        Domain.Entities.Central.Tenant tenant,
         CancellationToken cancellationToken);
     
-    Task<Tenant?> GetByDomainAsync(
+    Task<Domain.Entities.Central.Tenant?> GetByDomainAsync(
         string domain,
         CancellationToken cancellationToken);
-}
+} 

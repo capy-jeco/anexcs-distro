@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Anexcs.Distro.Application.Tenants.Commands.CreateTenant;
+namespace Anexcs.Distro.Application.Central.Tenants.Commands.CreateTenant;
 
 public class CreateTenantCommandValidator : AbstractValidator<CreateTenantCommand>
 {
