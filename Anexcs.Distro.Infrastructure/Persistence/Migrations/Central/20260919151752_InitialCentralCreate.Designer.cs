@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
 {
     [DbContext(typeof(CentralDbContext))]
-    [Migration("20260917220952_InitialCentralCreate")]
+    [Migration("20260919151752_InitialCentralCreate")]
     partial class InitialCentralCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.Tenant", b =>
+            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.Central.Tenant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
                     b.ToTable("Tenants");
                 });
 
-            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.TenantDomain", b =>
+            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.Central.TenantDomain", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,12 +72,12 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Domains");
+                    b.ToTable("TenantDomains");
                 });
 
-            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.TenantDomain", b =>
+            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.Central.TenantDomain", b =>
                 {
-                    b.HasOne("Anexcs.Distro.Domain.Entities.Tenant", "Tenant")
+                    b.HasOne("Anexcs.Distro.Domain.Entities.Central.Tenant", "Tenant")
                         .WithMany("Domains")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -86,7 +86,7 @@ namespace Anexcs.Distro.Infrastructure.Persistence.Migrations.Central
                     b.Navigation("Tenant");
                 });
 
-            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.Tenant", b =>
+            modelBuilder.Entity("Anexcs.Distro.Domain.Entities.Central.Tenant", b =>
                 {
                     b.Navigation("Domains");
                 });
