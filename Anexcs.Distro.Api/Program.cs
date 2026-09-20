@@ -1,8 +1,7 @@
 using Anexcs.Distro.Application;
 using Anexcs.Distro.Infrastructure;
 using Api.Middlewares;
-using FluentValidation;
-using Microsoft.AspNetCore.Diagnostics;
+using Scalar.AspNetCore;
 
 namespace Api;
 
@@ -24,8 +23,21 @@ public class Program
         
         builder.Services.AddControllers();
         
+        // Automatically convert route and query string
+        // parameters to lowercase kebab-case format
+        builder.Services.AddRouting(options => 
+        {
+            options.LowercaseUrls = true;
+            options.LowercaseQueryStrings = true;
+        });
+        
+        builder.Services.AddApiVersioning(options =>
+        {
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+        });
+        
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
         
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
@@ -36,9 +48,7 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
-            
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.MapScalarApiReference();
         }
         
         app.UseExceptionHandler(); 

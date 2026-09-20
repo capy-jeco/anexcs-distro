@@ -1,12 +1,10 @@
-﻿using Anexcs.Distro.Application.Abstractions.Persistence.Central;
+using Anexcs.Distro.Application.Abstractions.Persistence.Central;
 using Anexcs.Distro.Application.Central.Tenants.Dtos;
-using MediatR;
 
 namespace Anexcs.Distro.Application.Central.Tenants.Queries.GetTenantByDomain;
 
 public sealed class GetTenantByDomainQueryHandler(
     ITenantRepository tenantRepository)
-    : IRequestHandler<GetTenantByDomainQuery, TenantResponse?>
 {
     public async Task<TenantResponse?> Handle(
         GetTenantByDomainQuery request,

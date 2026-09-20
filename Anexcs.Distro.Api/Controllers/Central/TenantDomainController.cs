@@ -1,15 +1,16 @@
 ﻿using Anexcs.Distro.Application.Central.TenantDomains.Queries.GetTenantDomainsByTenantId;
+using Anexcs.Distro.Application.Central.TenantDomains.Dtos;
 
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Wolverine;
 
 namespace Api.Controllers.Central;
 
 [ApiController]
 [ApiVersion("1.0")]
-[Route("api/{version:apiVersion}/[controller]")]
-public class TenantDomainController(ISender sender) : Controller
+[Route("api/v{version:apiVersion}/tenants/{tenantId:guid}/domains")]
+public class TenantDomainController(IMessageBus messageBus) : Controller
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -21,7 +22,7 @@ public class TenantDomainController(ISender sender) : Controller
         var query = new GetTenantDomainsByTenantIdQuery(
             tenantId);
 
-        var domains = await sender.Send(
+        var domains = await messageBus.InvokeAsync<IReadOnlyList<TenantDomainResponse>>(
             query,
             cancellationToken);
 
