@@ -1,15 +1,15 @@
 ﻿using Anexcs.Distro.Application.Central.Tenants.Commands.CreateTenant;
 using Api.Contracts.Central.Tenant;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Wolverine;
 
 namespace Api.Controllers.Central;
 
 [ApiController]
 [ApiVersion("1.0")]
-[Route("api/{version:apiVersion}/[controller]")]
-public class TenantsController(ISender sender) : ControllerBase
+[Route("api/v{version:apiVersion}/[controller]")]
+public class TenantsController(IMessageBus messageBus) : ControllerBase
 {
 
     [HttpPost]
@@ -20,7 +20,9 @@ public class TenantsController(ISender sender) : ControllerBase
         [FromBody] CreateTenantCommand command,
         CancellationToken cancellationToken)
     {
-        var tenantId = await sender.Send(command, cancellationToken);
+        var tenantId = await messageBus.InvokeAsync<Guid>(
+            command,
+            cancellationToken);
 
         return CreatedAtAction(
             nameof(GetById),

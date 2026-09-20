@@ -1,6 +1,6 @@
 using Anexcs.Distro.Application.Common.Health;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Wolverine;
 
 namespace Api.Controllers;
 
@@ -8,18 +8,18 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class HealthController : ControllerBase
 {
-    private readonly ISender _sender;
+    private readonly IMessageBus _messageBus;
 
-    public HealthController(ISender sender)
+    public HealthController(IMessageBus messageBus)
     {
-        _sender = sender;
+        _messageBus = messageBus;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get(
         CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(
+        var result = await _messageBus.InvokeAsync<HealthResponse>(
             new GetHealthQuery(),
             cancellationToken);
 
