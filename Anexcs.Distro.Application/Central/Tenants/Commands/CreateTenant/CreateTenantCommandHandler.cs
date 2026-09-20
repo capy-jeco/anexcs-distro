@@ -1,13 +1,11 @@
-﻿using Anexcs.Distro.Application.Abstractions.Persistence.Central;
+using Anexcs.Distro.Application.Abstractions.Persistence.Central;
 using Anexcs.Distro.Domain.Entities.Central;
-using MediatR;
 
 namespace Anexcs.Distro.Application.Central.Tenants.Commands.CreateTenant;
 
 public sealed class CreateTenantCommandHandler(
     ITenantRepository tenantRepository,
     ICentralUnitOfWork unitOfWork)
-    : IRequestHandler<CreateTenantCommand, Guid>
 {
     public async Task<Guid> Handle(
         CreateTenantCommand request,

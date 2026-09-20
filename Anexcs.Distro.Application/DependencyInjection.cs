@@ -1,8 +1,7 @@
-﻿using Anexcs.Distro.Application.Common.Behaviors;
-using MediatR;
 using FluentValidation;
-
 using Microsoft.Extensions.DependencyInjection;
+using Wolverine;
+using Wolverine.FluentValidation;
 
 namespace Anexcs.Distro.Application;
 
@@ -11,17 +10,16 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(
         this IServiceCollection services)
     {
-        services.AddMediatR(cfg =>
+        services.AddWolverine(opts =>
         {
-            cfg.RegisterServicesFromAssembly(
+            opts.Discovery.IncludeAssembly(
                 typeof(DependencyInjection).Assembly);
+
+            opts.UseFluentValidation(
+                RegistrationBehavior.ExplicitRegistration);
         });
         
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
-        
-        services.AddTransient(
-            typeof(IPipelineBehavior<,>),
-            typeof(ValidationBehavior<,>));
         
         return services;
     }
