@@ -25,6 +25,18 @@ public static class DependencyInjection
             options.UseNpgsql(
                 configuration.GetConnectionString("CentralDatabase"));
         });
+        
+        services.AddDbContext<TenantDbContext>(options =>
+        {
+            options.UseNpgsql(
+                configuration.GetConnectionString("TenantDatabase"),
+                npgsql =>
+                {
+                    npgsql.MigrationsAssembly(
+                        typeof(TenantDbContext).Assembly.FullName);
+                });
+        });
+        
         services.AddScoped<
             ITenantDatabaseProvisioner,
             TenantDatabaseProvisioner>();

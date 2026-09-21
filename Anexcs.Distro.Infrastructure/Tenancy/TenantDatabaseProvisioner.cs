@@ -27,8 +27,15 @@ public sealed class TenantDatabaseProvisioner(IConfiguration configuration)
                 $"No admin connection string configured for server '{serverKey}'.");
         }
 
-        await CreateDatabaseAsync(adminConnectionString, databaseName, cancellationToken);
-        await MigrateDatabaseAsync(adminConnectionString, databaseName, cancellationToken);
+        await CreateDatabaseAsync(
+            adminConnectionString, 
+            databaseName, 
+            cancellationToken);
+        
+        await MigrateDatabaseAsync(
+            adminConnectionString, 
+            databaseName, 
+            cancellationToken);
 
         return new TenantDatabaseProvisionResult(databaseName, serverKey);
     }
@@ -60,16 +67,24 @@ public sealed class TenantDatabaseProvisioner(IConfiguration configuration)
         string databaseName,
         CancellationToken cancellationToken)
     {
-        var builder = new NpgsqlConnectionStringBuilder(adminConnectionString)
+        var builder = new NpgsqlConnectionStringBuilder(
+            adminConnectionString)
         {
             Database = databaseName
         };
 
         var options = new DbContextOptionsBuilder<TenantDbContext>()
-            .UseNpgsql(builder.ConnectionString)
+            .UseNpgsql(
+                builder.ConnectionString,
+                npgsql =>
+                {
+                    npgsql.MigrationsAssembly(
+                        typeof(TenantDbContext).Assembly.FullName);
+                })
             .Options;
 
         await using var context = new TenantDbContext(options);
+        
         await context.Database.MigrateAsync(cancellationToken);
     }
 }
