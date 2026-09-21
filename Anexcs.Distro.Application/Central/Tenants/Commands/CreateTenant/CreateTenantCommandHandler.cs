@@ -1,11 +1,14 @@
 using Anexcs.Distro.Application.Abstractions.Persistence.Central;
+using Anexcs.Distro.Application.Abstractions.Tenancy;
 using Anexcs.Distro.Domain.Entities.Central;
+using Anexcs.Distro.Domain.Enums;
 
 namespace Anexcs.Distro.Application.Central.Tenants.Commands.CreateTenant;
 
 public sealed class CreateTenantCommandHandler(
     ITenantRepository tenantRepository,
-    ICentralUnitOfWork unitOfWork)
+    ICentralUnitOfWork unitOfWork,
+    ITenantDatabaseProvisioner tenantDatabaseProvisioner)
 {
     public async Task<Guid> Handle(
         CreateTenantCommand request,
@@ -16,6 +19,8 @@ public sealed class CreateTenantCommandHandler(
         var tenant = new Tenant(
             tenantId,
             request.Data);
+
+        tenant.MarkAsProvisioning();
 
         var tenantDomain = new TenantDomain(
             request.InitialDomain,
@@ -29,6 +34,27 @@ public sealed class CreateTenantCommandHandler(
 
         await unitOfWork.SaveChangesAsync(
             cancellationToken);
+
+        try
+        {
+            await tenantDatabaseProvisioner.ProvisionAsync(
+                tenantId,
+                cancellationToken);
+
+            tenant.Activate();
+
+            await unitOfWork.SaveChangesAsync(
+                cancellationToken);
+        }
+        catch
+        {
+            tenant.MarkProvisioningFailed();
+
+            await unitOfWork.SaveChangesAsync(
+                cancellationToken);
+
+            throw;
+        }
 
         return tenant.Id;
     }

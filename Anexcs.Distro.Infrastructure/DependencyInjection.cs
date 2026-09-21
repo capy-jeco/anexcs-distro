@@ -1,11 +1,13 @@
 ﻿// Distro.Application
 using Anexcs.Distro.Application.Abstractions.Persistence.Central;
 using Anexcs.Distro.Application.Abstractions.Persistence.Tenant;
+using Anexcs.Distro.Application.Abstractions.Tenancy;
 
 // Distro.Infrastructure
 using Anexcs.Distro.Infrastructure.Persistence.Central;
 using Anexcs.Distro.Infrastructure.Persistence.Central.Repositories;
 using Anexcs.Distro.Infrastructure.Persistence.Tenant;
+using Anexcs.Distro.Infrastructure.Tenancy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,14 +25,17 @@ public static class DependencyInjection
             options.UseNpgsql(
                 configuration.GetConnectionString("CentralDatabase"));
         });
-        
-        services.AddScoped<ITenantRepository, TenantRepository>();
-        services.AddScoped<ITenantDomainRepository, TenantDomainRepository>();
+        services.AddScoped<
+            ITenantDatabaseProvisioner,
+            TenantDatabaseProvisioner>();
         
         services.AddScoped<ICentralUnitOfWork>(sp =>
             sp.GetRequiredService<CentralDbContext>());
         services.AddScoped<ITenantUnitOfWork>(sp =>
             sp.GetRequiredService<TenantDbContext>());
+        
+        services.AddScoped<ITenantRepository, TenantRepository>();
+        services.AddScoped<ITenantDomainRepository, TenantDomainRepository>();
         
         return services;
     }

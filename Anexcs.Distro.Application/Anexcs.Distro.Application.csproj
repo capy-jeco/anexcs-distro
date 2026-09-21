@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Abstractions\Identity\" />
-      <Folder Include="Abstractions\Tenancy\" />
       <Folder Include="Central\TenantDomains\Commands\" />
       <Folder Include="Common\Exceptions\" />
       <Folder Include="Common\Mapping\" />
