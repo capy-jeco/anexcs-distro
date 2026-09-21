@@ -10,4 +10,12 @@ public class TenantDbContext : DbContext, ITenantUnitOfWork
         : base(options)
     {
     }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(TenantDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }

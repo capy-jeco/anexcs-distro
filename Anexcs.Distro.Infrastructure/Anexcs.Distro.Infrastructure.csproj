@@ -13,7 +13,7 @@
 
     <ItemGroup>
       <Folder Include="Identity\" />
-      <Folder Include="Persistence\Migrations\" />
+      <Folder Include="Persistence\Migrations\Tenant\" />
       <Folder Include="Persistence\Tenant\Configurations\" />
       <Folder Include="Persistence\Tenant\Respositories\" />
       <Folder Include="Services\" />
