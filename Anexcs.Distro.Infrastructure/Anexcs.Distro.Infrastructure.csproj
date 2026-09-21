@@ -17,7 +17,6 @@
       <Folder Include="Persistence\Tenant\Configurations\" />
       <Folder Include="Persistence\Tenant\Respositories\" />
       <Folder Include="Services\" />
-      <Folder Include="Tenancy\" />
     </ItemGroup>
 
     <ItemGroup>

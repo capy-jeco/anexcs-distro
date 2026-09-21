@@ -18,6 +18,8 @@ public class CentralDbContext : DbContext, ICentralUnitOfWork
         {
             b.HasKey(t => t.Id);
             b.Property(t => t.Data).HasColumnType("jsonb");
+            b.Property(t => t.DatabaseName).HasMaxLength(63); // Postgres identifier limit
+            b.Property(t => t.ServerKey).HasMaxLength(100);
             b.HasMany(t => t.Domains)
                 .WithOne(d => d.Tenant)
                 .HasForeignKey(d => d.TenantId)
