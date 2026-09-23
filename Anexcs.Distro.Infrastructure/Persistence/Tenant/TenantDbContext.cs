@@ -1,9 +1,11 @@
 ﻿using Anexcs.Distro.Application.Abstractions.Persistence.Tenant;
+using Anexcs.Distro.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anexcs.Distro.Infrastructure.Persistence.Tenant;
 
-public class TenantDbContext : DbContext, ITenantUnitOfWork
+public class TenantDbContext : IdentityDbContext<TenantIdentityUser>, ITenantUnitOfWork
 {
     public TenantDbContext(
         DbContextOptions<TenantDbContext> options)
@@ -13,9 +15,6 @@ public class TenantDbContext : DbContext, ITenantUnitOfWork
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(TenantDbContext).Assembly);
-
         base.OnModelCreating(modelBuilder);
     }
 }
