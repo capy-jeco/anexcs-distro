@@ -1,13 +1,16 @@
 ﻿using Anexcs.Distro.Application.Abstractions.Persistence.Central;
+using Anexcs.Distro.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anexcs.Distro.Infrastructure.Persistence.Central;
 
-public class CentralDbContext : DbContext, ICentralUnitOfWork
+public class CentralDbContext : IdentityDbContext<CentralIdentityUser>, ICentralUnitOfWork
 {
-    public CentralDbContext(
-        DbContextOptions<CentralDbContext> options)
-        : base(options) { }
+    public CentralDbContext(DbContextOptions<CentralDbContext> options) 
+        : base(options)
+    {
+    }
     
     public DbSet<Domain.Entities.Central.Tenant> Tenants => Set<Domain.Entities.Central.Tenant>();
     public DbSet<Domain.Entities.Central.TenantDomain> TenantDomains => Set<Domain.Entities.Central.TenantDomain>();
