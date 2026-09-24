@@ -14,6 +14,8 @@
     <ItemGroup>
       <Folder Include="Abstractions\Identity\" />
       <Folder Include="Central\TenantDomains\Commands\" />
+      <Folder Include="Central\Users\Dtos\" />
+      <Folder Include="Central\Users\Queries\" />
       <Folder Include="Common\Exceptions\" />
       <Folder Include="Common\Mapping\" />
       <Folder Include="Common\Models\" />
