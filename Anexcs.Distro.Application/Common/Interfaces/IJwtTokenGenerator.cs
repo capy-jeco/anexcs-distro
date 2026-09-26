@@ -5,6 +5,6 @@ namespace Anexcs.Distro.Application.Common.Interfaces;
 
 public interface IJwtTokenGenerator
 {
-    string GenerateCentralUserToken(CentralUser user);
-    string GenerateTenantUserToken(TenantUser user, string tenantId);
+    string GenerateCentralUserToken(CentralUser user, IList<string> roles);
+    string GenerateTenantUserToken(TenantUser user, string tenantId, IList<string> roles);
 }

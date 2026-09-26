@@ -20,7 +20,9 @@ public sealed class LoginCentralUserCommandHandler(
         var authenticatedUser = await userRepository.CheckPasswordAsync(user, command.Password, cancellationToken);
         if (authenticatedUser is null)
             throw new UnauthorizedAccessException("Invalid credentials.");
-
-        return jwtTokenGenerator.GenerateCentralUserToken(authenticatedUser);
+        
+        var roles = await userRepository.GetRolesAsync(user, cancellationToken);
+        
+        return jwtTokenGenerator.GenerateCentralUserToken(authenticatedUser, roles);
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using Anexcs.Distro.Application.Common.Interfaces;
 using Anexcs.Distro.Domain.Entities.Central;
 using Anexcs.Distro.Domain.Entities.Tenants;
+using JasperFx.Core;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,7 +14,7 @@ public class JwtTokenGenerator(IOptions<JwtSettings> jwtOptions) : IJwtTokenGene
 {
     private readonly JwtSettings _jwtSettings = jwtOptions.Value;
 
-    public string GenerateCentralUserToken(CentralUser user)
+    public string GenerateCentralUserToken(CentralUser user, IList<string> roles)
     {
         var claims = new[]
         {
@@ -21,11 +22,13 @@ public class JwtTokenGenerator(IOptions<JwtSettings> jwtOptions) : IJwtTokenGene
             new Claim(JwtRegisteredClaimNames.Email, user.Email!),
             new Claim("user_type", "central")
         };
+        
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return GenerateToken(claims);
     }
 
-    public string GenerateTenantUserToken(TenantUser user, string tenantId)
+    public string GenerateTenantUserToken(TenantUser user, string tenantId, IList<string> roles)
     {
         var claims = new[]
         {
@@ -34,7 +37,9 @@ public class JwtTokenGenerator(IOptions<JwtSettings> jwtOptions) : IJwtTokenGene
             new Claim("tenant_id", tenantId),
             new Claim("user_type", "tenant")
         };
-
+        
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        
         return GenerateToken(claims);
     }
 

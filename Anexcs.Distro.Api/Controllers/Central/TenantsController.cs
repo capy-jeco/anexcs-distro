@@ -1,6 +1,8 @@
 ﻿using Anexcs.Distro.Application.Central.Tenants.Commands.CreateTenant;
+using Anexcs.Distro.Infrastructure.Authorization;
 using Api.Contracts.Central.Tenant;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wolverine;
 
@@ -13,6 +15,7 @@ public class TenantsController(IMessageBus messageBus) : ControllerBase
 {
 
     [HttpPost]
+    [Authorize(Policy = AuthorizationPolicies.RequirePlatformAdministrator)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
