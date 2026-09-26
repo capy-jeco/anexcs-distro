@@ -18,4 +18,8 @@ public interface ICentralUserRepository
         Domain.Entities.Central.CentralUser user,
         string password,
         CancellationToken cancellationToken);
+    
+    Task<IList<string>> GetRolesAsync(
+        Domain.Entities.Central.CentralUser user,
+        CancellationToken cancellationToken);
 }

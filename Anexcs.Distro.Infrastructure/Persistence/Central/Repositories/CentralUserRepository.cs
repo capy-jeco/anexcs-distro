@@ -74,6 +74,31 @@ public class CentralUserRepository (
         return user;
     }
     
+    public async Task<IList<string>> GetRolesAsync(
+        CentralUser user,
+        CancellationToken cancellationToken)
+    {
+        var identityUser = await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == user.Id, cancellationToken);
+
+        if (identityUser is null)
+        {
+            return new List<string>();
+        }
+
+        var roles = await context.UserRoles
+            .AsNoTracking()
+            .Where(ur => ur.UserId == identityUser.Id)
+            .Join(context.Roles,
+                ur => ur.RoleId,
+                r => r.Id,
+                (ur, r) => r.Name)
+            .ToListAsync(cancellationToken);
+
+        return roles;
+    }
+    
     private static CentralUser MapToDomain(CentralIdentityUser identityUser)
     {
         return new CentralUser(

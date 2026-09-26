@@ -1,7 +1,11 @@
 using Anexcs.Distro.Application.Abstractions.Tenancy;
+using Anexcs.Distro.Application.Common.Constants;
 using Anexcs.Distro.Infrastructure.Persistence.Tenant;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
 using Npgsql;
 
 namespace Anexcs.Distro.Infrastructure.Tenancy;
@@ -86,5 +90,19 @@ public sealed class TenantDatabaseProvisioner(IConfiguration configuration)
         await using var context = new TenantDbContext(options);
         
         await context.Database.MigrateAsync(cancellationToken);
+        
+        var roleStore = new RoleStore<IdentityRole>(context);
+        var roleManager = new RoleManager<IdentityRole>(
+            roleStore,
+            roleValidators: [],
+            keyNormalizer: new UpperInvariantLookupNormalizer(),
+            errors: new IdentityErrorDescriber(),
+            logger: NullLogger<RoleManager<IdentityRole>>.Instance);
+
+        foreach (var role in TenantRoles.All)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+                await roleManager.CreateAsync(new IdentityRole(role));
+        }
     }
 }
