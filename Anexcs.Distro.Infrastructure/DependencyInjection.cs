@@ -6,6 +6,7 @@ using Anexcs.Distro.Application.Abstractions.Persistence.Tenant;
 using Anexcs.Distro.Application.Abstractions.Tenancy;
 using Anexcs.Distro.Application.Common.Interfaces;
 using Anexcs.Distro.Infrastructure.Authentication;
+using Anexcs.Distro.Infrastructure.Authorization;
 using Anexcs.Distro.Infrastructure.Identity;
 
 // Distro.Infrastructure
@@ -15,6 +16,7 @@ using Anexcs.Distro.Infrastructure.Persistence.Tenant;
 using Anexcs.Distro.Infrastructure.Tenancy;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -115,6 +117,12 @@ public static class DependencyInjection
         
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<ITenantDomainRepository, TenantDomainRepository>();
+
+        services.AddAuthorizationBuilder()
+            .SetDefaultPolicy(new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build());
+        services.AddAuthorization(AuthorizationPolicies.Configure);
         
         return services;
     }
