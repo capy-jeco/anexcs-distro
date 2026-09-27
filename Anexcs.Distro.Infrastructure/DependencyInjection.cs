@@ -117,6 +117,9 @@ public static class DependencyInjection
         
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<ITenantDomainRepository, TenantDomainRepository>();
+        
+        services.AddScoped<TenantContext>();
+        services.AddScoped<ITenantContext>(sp => sp.GetRequiredService<TenantContext>());
 
         services.AddAuthorizationBuilder()
             .SetDefaultPolicy(new AuthorizationPolicyBuilder()
