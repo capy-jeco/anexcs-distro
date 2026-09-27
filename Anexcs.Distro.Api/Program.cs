@@ -57,6 +57,8 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseMiddleware<TenantResolutionMiddleware>();
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.Run();
