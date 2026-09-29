@@ -95,6 +95,8 @@ public static class DependencyInjection
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
         };
+        
+        services.Configure<TenancyOptions>(configuration.GetSection(TenancyOptions.SectionName));
 
         services
             .AddIdentityCore<CentralIdentityUser>(configureIdentityOptions)
@@ -120,7 +122,7 @@ public static class DependencyInjection
         
         services.AddScoped<TenantContext>();
         services.AddScoped<ITenantContext>(sp => sp.GetRequiredService<TenantContext>());
-
+        
         services.AddAuthorizationBuilder()
             .SetDefaultPolicy(new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
