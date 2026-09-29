@@ -9,12 +9,15 @@ public class TenantDomain
     public DateTime? UpdatedAtUtc { get; private set; }
     public Tenant Tenant { get; init; } = null!;
     
+    public static string NormalizeDomain(string domain)
+        => domain.Trim().TrimEnd('.').ToLowerInvariant();
+    
     private TenantDomain() { }
 
     public TenantDomain(string domain, Guid tenantId)
     {
         Id = Guid.NewGuid();
-        Domain = domain;
+        Domain = NormalizeDomain(domain);
         TenantId = tenantId;
         CreatedAtUtc = DateTime.UtcNow;
     }
