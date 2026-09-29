@@ -1,4 +1,5 @@
 ﻿using Anexcs.Distro.Infrastructure.Persistence.Central;
+using Anexcs.Distro.IntegrationTests.Tenancy;
 using Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -30,6 +31,9 @@ public class IntegrationTestFactory : WebApplicationFactory<Program>, IAsyncLife
             // Add it back using the Test container connection string
             services.AddDbContext<CentralDbContext>(options =>
                 options.UseNpgsql(_dbContainer.GetConnectionString()));
+            
+            services.AddControllers()
+                .AddApplicationPart(typeof(TenantContextProbeController).Assembly);
         });
     }
 
