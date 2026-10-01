@@ -59,6 +59,7 @@ public class Program
 
         app.UseMiddleware<TenantResolutionMiddleware>();
         app.UseAuthentication();
+        app.UseMiddleware<TenantMembershipGuardMiddleware>();
         app.UseAuthorization();
 
         app.Run();
