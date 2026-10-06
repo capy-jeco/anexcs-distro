@@ -19,7 +19,8 @@ public class TenantResolutionMiddleware(
     public async Task InvokeAsync(
         HttpContext context,
         CentralDbContext centralDbContext,
-        TenantContext tenantContext)
+        TenantContext tenantContext,
+        TenantConnectionInfo connectionInfo)
     {
         var rawHost = context.Request.Host;
 
@@ -43,7 +44,13 @@ public class TenantResolutionMiddleware(
         var match = await centralDbContext.TenantDomains
             .AsNoTracking()
             .Where(d => d.Domain == host)
-            .Select(d => new { d.TenantId, d.Tenant.Status })
+            .Select(d => new
+            {
+                d.TenantId, 
+                d.Tenant.Status,
+                d.Tenant.DatabaseName,
+                d.Tenant.ServerKey
+            })
             .FirstOrDefaultAsync(context.RequestAborted);
 
         if (match is null)
@@ -59,8 +66,17 @@ public class TenantResolutionMiddleware(
                 "Tenant unavailable", "This tenant is not active.");
             return;
         }
+        
+        if (match.DatabaseName is null || match.ServerKey is null)
+        {
+            await RejectAsync(context, StatusCodes.Status500InternalServerError,
+                "Tenant misconfigured", "This tenant is active but has no database assigned.");
+            return;
+        }
 
         tenantContext.SetTenant(match.TenantId);
+        connectionInfo.Set(match.DatabaseName, match.ServerKey);
+        
         await next(context);
     }
 
