@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Abstractions\Identity\" />
       <Folder Include="Central\TenantDomains\Commands\" />
       <Folder Include="Central\Users\Dtos\" />
       <Folder Include="Central\Users\Queries\" />
