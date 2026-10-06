@@ -1,3 +1,4 @@
+using Anexcs.Distro.Application.Abstractions.Identity;
 using Anexcs.Distro.Application.Abstractions.Persistence.Central;
 using Anexcs.Distro.Application.Common.Interfaces;
 using Anexcs.Distro.Domain.Entities.Central;
@@ -5,6 +6,7 @@ using Anexcs.Distro.Domain.Entities.Central;
 namespace Anexcs.Distro.Application.Central.Users.Commands.LoginCentralUser;
 
 public sealed class LoginCentralUserCommandHandler(
+    ICentralIdentityService identityService,
     ICentralUserRepository userRepository,
     IJwtTokenGenerator jwtTokenGenerator)
 {
@@ -17,12 +19,16 @@ public sealed class LoginCentralUserCommandHandler(
         if (user is null || !user.IsActive)
             throw new UnauthorizedAccessException("Invalid credentials.");
 
-        var authenticatedUser = await userRepository.CheckPasswordAsync(user, command.Password, cancellationToken);
+        var authenticatedUser = await identityService.ValidateCredentialsAsync(
+            user.Email, 
+            command.Password, 
+            cancellationToken);
+        
         if (authenticatedUser is null)
             throw new UnauthorizedAccessException("Invalid credentials.");
         
-        var roles = await userRepository.GetRolesAsync(user, cancellationToken);
+        var roles = authenticatedUser.Roles.ToList();
         
-        return jwtTokenGenerator.GenerateCentralUserToken(authenticatedUser, roles);
+        return jwtTokenGenerator.GenerateCentralUserToken(authenticatedUser.User!, roles);
     }
 }

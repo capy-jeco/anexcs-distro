@@ -1,16 +1,12 @@
 using Anexcs.Distro.Application.Abstractions.Persistence.Central;
-using Anexcs.Distro.Domain.Entities.Central;
-using Anexcs.Distro.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
+using Anexcs.Distro.Infrastructure.Identity.Central;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anexcs.Distro.Infrastructure.Persistence.Central.Repositories;
 
-public class CentralUserRepository (
-    CentralDbContext context,
-    IPasswordHasher<CentralIdentityUser> passwordHasher) : ICentralUserRepository
+public class CentralUserRepository(CentralDbContext context) : ICentralUserRepository
 {
-    public async Task<CentralUser?> GetByIdAsync(
+    public async Task<Domain.Entities.Central.CentralUser?> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken)
     {
@@ -21,7 +17,7 @@ public class CentralUserRepository (
         return identityUser is null ? null : MapToDomain(identityUser);
     }
 
-    public async Task<CentralUser?> FindByEmailAsync(
+    public async Task<Domain.Entities.Central.CentralUser?> FindByEmailAsync(
         string email,
         CancellationToken cancellationToken)
     {
@@ -34,7 +30,7 @@ public class CentralUserRepository (
         return identityUser is null ? null : MapToDomain(identityUser);
     }
 
-    public async Task<CentralUser?> FindByNameAsync(
+    public async Task<Domain.Entities.Central.CentralUser?> FindByNameAsync(
         string userName,
         CancellationToken cancellationToken)
     {
@@ -47,66 +43,13 @@ public class CentralUserRepository (
         return identityUser is null ? null : MapToDomain(identityUser);
     }
 
-    public async Task<CentralUser?> CheckPasswordAsync(
-        CentralUser user,
-        string password,
-        CancellationToken cancellationToken)
+    private static Domain.Entities.Central.CentralUser MapToDomain(CentralIdentityUser identityUser)
     {
-        var identityUser = await context.Users
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == user.Id, cancellationToken);
-
-        if (identityUser?.PasswordHash is null)
-        {
-            return null;
-        }
-
-        var verificationResult = passwordHasher.VerifyHashedPassword(
-            identityUser, 
-            identityUser.PasswordHash, 
-            password);
-
-        if (verificationResult == PasswordVerificationResult.Failed)
-        {
-            return null;
-        }
-
-        return user;
-    }
-    
-    public async Task<IList<string>> GetRolesAsync(
-        CentralUser user,
-        CancellationToken cancellationToken)
-    {
-        var identityUser = await context.Users
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == user.Id, cancellationToken);
-
-        if (identityUser is null)
-        {
-            return new List<string>();
-        }
-
-        var roles = await context.UserRoles
-            .AsNoTracking()
-            .Where(ur => ur.UserId == identityUser.Id)
-            .Join(context.Roles,
-                ur => ur.RoleId,
-                r => r.Id,
-                (ur, r) => r.Name)
-            .ToListAsync(cancellationToken);
-
-        return roles;
-    }
-    
-    private static CentralUser MapToDomain(CentralIdentityUser identityUser)
-    {
-        return new CentralUser(
+        return new Domain.Entities.Central.CentralUser(
             identityUser.Id,
             identityUser.FirstName,
             identityUser.MiddleName,
             identityUser.LastName,
-            identityUser.Email!,
-            identityUser.PasswordHash ?? string.Empty);
+            identityUser.Email!);
     }
 }

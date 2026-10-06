@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Anexcs.Distro.Infrastructure.Identity;
 
-public class TenantIdentityUser : IdentityUser
+public class TenantIdentityUser : IdentityUser<Guid>
 {
     public string FirstName { get; set; } = null!;
 

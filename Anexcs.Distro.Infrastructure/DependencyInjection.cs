@@ -5,6 +5,7 @@ using Anexcs.Distro.Application.Abstractions.Persistence.Central;
 using Anexcs.Distro.Application.Abstractions.Persistence.Tenant;
 using Anexcs.Distro.Application.Abstractions.Tenancy;
 using Anexcs.Distro.Application.Common.Interfaces;
+using Anexcs.Distro.Domain.Entities.Central;
 using Anexcs.Distro.Infrastructure.Authentication;
 using Anexcs.Distro.Infrastructure.Authorization;
 using Anexcs.Distro.Infrastructure.Identity;
@@ -53,6 +54,12 @@ public static class DependencyInjection
                 });
         });
         
+        services.AddDbContext<TenantDbContext>((serviceProvider, options) =>
+        {
+            var resolver = serviceProvider.GetRequiredService<TenantConnectionStringResolver>();
+            options.UseNpgsql(resolver.Resolve());
+        });
+        
         // 1. JWT Configuration & Token Generator Registration
         var jwtSettings = new JwtSettings();
         configuration.GetSection(JwtSettings.SectionName).Bind(jwtSettings);
@@ -99,7 +106,7 @@ public static class DependencyInjection
         services.Configure<TenancyOptions>(configuration.GetSection(TenancyOptions.SectionName));
 
         services
-            .AddIdentityCore<CentralIdentityUser>(configureIdentityOptions)
+            .AddIdentityCore<CentralUser>(configureIdentityOptions)
             .AddEntityFrameworkStores<CentralDbContext>()
             .AddDefaultTokenProviders();
 

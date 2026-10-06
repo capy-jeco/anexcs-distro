@@ -7,7 +7,6 @@ public class CentralUser
     public string? MiddleName { get; private set; }
     public string LastName { get; private set; } = null!;
     public string Email { get; private set; } = null!;
-    public string PasswordHash { get; private set; } = null!;
     public bool IsActive { get; private set; } = true;
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? UpdatedAtUtc { get; private set; }
@@ -22,7 +21,6 @@ public class CentralUser
         string? middleName,
         string lastName,
         string email,
-        string passwordHash,
         bool isActive = true,
         DateTime? createdAtUtc = null,
         DateTime? updatedAtUtc = null,
@@ -33,7 +31,6 @@ public class CentralUser
         MiddleName = middleName;
         LastName = lastName;
         Email = email;
-        PasswordHash = passwordHash;
         IsActive = isActive;
         CreatedAtUtc = createdAtUtc ?? DateTime.UtcNow;
         UpdatedAtUtc = updatedAtUtc;
@@ -53,8 +50,7 @@ public class CentralUser
             firstName,
             middleName,
             lastName,
-            email,
-            passwordHash);
+            email);
     }
 
     // --- Domain Behaviors ---
@@ -64,12 +60,6 @@ public class CentralUser
         FirstName = firstName;
         MiddleName = middleName;
         LastName = lastName;
-        UpdatedAtUtc = DateTime.UtcNow;
-    }
-
-    public void UpdatePassword(string passwordHash)
-    {
-        PasswordHash = passwordHash;
         UpdatedAtUtc = DateTime.UtcNow;
     }
 

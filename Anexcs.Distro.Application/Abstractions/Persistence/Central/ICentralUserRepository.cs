@@ -13,13 +13,4 @@ public interface ICentralUserRepository
     Task<Domain.Entities.Central.CentralUser?> FindByNameAsync(
         string userName,
         CancellationToken cancellationToken);
-    
-    Task<Domain.Entities.Central.CentralUser?> CheckPasswordAsync(
-        Domain.Entities.Central.CentralUser user,
-        string password,
-        CancellationToken cancellationToken);
-    
-    Task<IList<string>> GetRolesAsync(
-        Domain.Entities.Central.CentralUser user,
-        CancellationToken cancellationToken);
 }
