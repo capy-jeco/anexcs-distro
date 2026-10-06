@@ -1,5 +1,6 @@
 ﻿using Anexcs.Distro.Application.Abstractions.Persistence.Central;
-using Anexcs.Distro.Infrastructure.Identity;
+using Anexcs.Distro.Domain.Entities.Central;
+using Anexcs.Distro.Infrastructure.Identity.Central;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +40,8 @@ public class CentralDbContext : IdentityDbContext<CentralIdentityUser, IdentityR
         });
         
         // Configure CentralUser entity
-        // 2. Map CentralIdentityUser to 'CentralUsers' instead of default 'AspNetUsers'
-        modelBuilder.Entity<CentralIdentityUser>(b =>
+        // 2. Map CentralUser to 'CentralUsers' instead of default 'AspNetUsers'
+        modelBuilder.Entity<CentralUser>(b =>
         {
             b.ToTable("CentralUsers");
         });
