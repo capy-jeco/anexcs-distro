@@ -91,18 +91,18 @@ public sealed class TenantDatabaseProvisioner(IConfiguration configuration)
         
         await context.Database.MigrateAsync(cancellationToken);
         
-        var roleStore = new RoleStore<IdentityRole>(context);
-        var roleManager = new RoleManager<IdentityRole>(
+        var roleStore = new RoleStore<IdentityRole<Guid>, TenantDbContext, Guid>(context);
+        var roleManager = new RoleManager<IdentityRole<Guid>>(
             roleStore,
             roleValidators: [],
             keyNormalizer: new UpperInvariantLookupNormalizer(),
             errors: new IdentityErrorDescriber(),
-            logger: NullLogger<RoleManager<IdentityRole>>.Instance);
+            logger: NullLogger<RoleManager<IdentityRole<Guid>>>.Instance);
 
         foreach (var role in TenantRoles.All)
         {
             if (!await roleManager.RoleExistsAsync(role))
-                await roleManager.CreateAsync(new IdentityRole(role));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(role) { Id = Guid.NewGuid() });
         }
     }
 }
